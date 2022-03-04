@@ -15,6 +15,8 @@ Set custom commands in .bashrc
 1. Open Git Bash
 2. Go to user directory C:\\Users\\`USERNAME`
    ```bash
+   cd $HOME
+   # or
    cd C:Users/USERNAME
    ```
 3. Create `.bashrc` file
