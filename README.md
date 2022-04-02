@@ -3,21 +3,27 @@ Set your custom Commands in .bashrc
 
 ## Create .bashrc in Windows
 
-1. Clone this repository
+1. Open `Git Bash` and paste the following commands
+
+2. Clone this repository
 
    ```bash
    git clone https://github.com/lordmahyar/Windeows-bashrc.git
    ```
 
-2. Copy `.bashrc` to user directory C:\\Users\\`USERNAME`\\
+3. Copy `.bashrc` to user directory C:\\Users\\`USERNAME`\\
 
    ```bash
    cp .bashrc $HOME
    ```
 
-3. Restart Git Bash to apply changes
+4. Restart Git Bash to apply changes
+   
+   ```bash
+   bash
+   ```
 
-4. Run `dj` to see commands
+5. Run `dj` to see your custom commands
 
    ```bash
    $ dj
@@ -46,14 +52,13 @@ you should get above existence message if `.bashrc` exists in the user directory
 
 ## Read/Write on .bashrc
 
-
-1. Read `.bashrc` 
+1. Read `.bashrc`
 
    ```bash
    cat $HOME/.bashrc
    ```
 
-2. Write on `.bashrc` 
+2. Write on `.bashrc`
 
    ```bash
    # using nano
@@ -65,6 +70,23 @@ you should get above existence message if `.bashrc` exists in the user directory
    # using your editor
    start $HOME/.bashrc
    ```
+
+## Get/Set `DEFAULT_PASSWORD` variable in .bashrc
+
+1. Get `DEFAULT_PASSWORD`
+
+   ```bash
+   echo $DEFAULT_PASSWORD
+   ```
+
+2. Set Temporary `DEFAULT_PASSWORD`
+
+   ```bash
+   export DEFAULT_PASSWORD="New_Password"
+   ```
+
+3. Set Permanent `DEFAULT_PASSWORD`  
+   set your new password in `.bashrc` line 4.
 
 ## Notes
 ### Set alias commands :
@@ -97,3 +119,7 @@ dj-pip(){
 ```
 
 This means when you run `dj-pip django` it will run `python -m pip install django`, so you don't need to type many words and arguments.
+
+
+echo $DEFAULT_PASSWORD
+export DEFAULT_PASSWORD="Password"
