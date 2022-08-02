@@ -25,20 +25,22 @@ Set your custom Commands in .bashrc
 
 5. Run `dj` to see your custom commands
 
-   ```bash
+   ```
    $ dj
-   [HELP]:
-
-    dj-req
-    dj-run
-    dj-shell
-    dj-mig [APP_NAME]
-    dj-admin [USER_NAME]
-    dj-user USER_NAME
-    dj-env ENVIROMENT_DIR
-    dj-app APP_NAME
-    dj-clean
-    dj-pip PACKAGE_NAME
+   
+   [List of Commands]
+   dj-admin [USER_NAME]     creates custom superuser or by USER_NAME and DEFAULT_PASSWORD
+   dj-app APP_NAME          creates a new app by APP_NAME
+   dj-cleaner               recreates database
+   dj-env [ENVIROMENT_DIR]  activates current project environment or ENVIROMENT_DIR
+   dj-mig [APP_NAME]        makes migrations for project or specific APP_NAME
+   dj-pip PACKAGE_NAME      installs python package by PACKAGE_NAME
+   dj-prj                   creates a new project as config
+   dj-req                   updates requirements.txt
+   dj-run                   runs django project on server
+   dj-shell                 opens django project shell
+   dj-upg PACKAGE_NAME      upgrades python package by PACKAGE_NAME
+   dj-user USER_NAME        creates user by USER_NAME and DEFAULT_PASSWORD
    ```
 
 ## Check .bashrc
