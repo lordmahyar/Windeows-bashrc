@@ -14,29 +14,47 @@ InfoText=`tput setaf 4`
 GreenBg=`tput setaf 16 && tput setab 2`
 
 # Help
-alias dj='
-echo ${GreenBg}[HELP]:${Reset}
-echo ${SuccessText}
-echo dj-req
-echo dj-run
-echo dj-shell
-echo dj-mig [APP_NAME]
-echo dj-admin [USER_NAME]
-echo dj-user USER_NAME
-echo dj-env ENVIROMENT_DIR
-echo dj-app APP_NAME
-echo dj-clean
-echo dj-pip PACKAGE_NAME
-echo ${Reset}'
+dj(){
+    printf "\n${GreenBg}[List of Commands]${Reset}\n"
+    printf "%-35s %s\n" "${SuccessText}dj-admin [USER_NAME]${Reset}" "creates custom superuser or by USER_NAME and DEFAULT_PASSWORD"
+    printf "%-35s %s\n" "${SuccessText}dj-app APP_NAME${Reset}" "creates a new app by APP_NAME"
+    printf "%-35s %s\n" "${SuccessText}dj-cleaner${Reset}" "recreates database"
+    printf "%-35s %s\n" "${SuccessText}dj-env [ENVIROMENT_DIR]${Reset}" "activates current project environment or ENVIROMENT_DIR"
+    printf "%-35s %s\n" "${SuccessText}dj-mig [APP_NAME]${Reset}" "makes migrations for project or specific APP_NAME"
+    printf "%-35s %s\n" "${SuccessText}dj-pip PACKAGE_NAME${Reset}" "installs python package by PACKAGE_NAME"
+    printf "%-35s %s\n" "${SuccessText}dj-prj${Reset}" "creates a new project as config"
+    printf "%-35s %s\n" "${SuccessText}dj-req${Reset}" "updates requirements.txt"
+    printf "%-35s %s\n" "${SuccessText}dj-run${Reset}" "runs django project on server"
+    printf "%-35s %s\n" "${SuccessText}dj-shell${Reset}" "opens django project shell"
+    printf "%-35s %s\n" "${SuccessText}dj-upg PACKAGE_NAME${Reset}" "upgrades python package by PACKAGE_NAME"
+    printf "%-35s %s\n" "${SuccessText}dj-user USER_NAME${Reset}" "creates user by USER_NAME and DEFAULT_PASSWORD"
+}
 
 # ACTIVE DJANGO ENVIROMENT
 dj-env(){
-    source "$1"/Scripts/activate
+    echo "${SuccessText}Activating Virtual Environment ...${Reset}"
+    if [ -z "$1" ]
+    then
+        ENV_DIR=$(find ../env_* -maxdepth 0 -type d)
+        source ${ENV_DIR}/Scripts/activate
+    else
+        source "$1"/Scripts/activate
+    fi
+}
+
+# CREATE DJANGO PROJECT
+dj-project(){
+    django-admin startproject config
 }
 
 # CREATE DJANGO APP
 dj-app(){
-    python manage.py startapp "$1"
+    if [ -z "$1" ]
+    then
+        echo "${WarningText}run command with APP_NAME${Reset}"
+    else
+        python manage.py startapp "$1"
+    fi
 }
 
 # INSTALL PYTHON PACKAGE
@@ -44,12 +62,17 @@ dj-pip(){
     python -m pip install "$1"
 }
 
+# UPGRADE PYTHON PACKAGE
+dj-upg(){
+    python -m pip install "$1" --upgrade
+}
+
 # DO DJANGO MIGRATION
 dj-mig(){
     if [ -z "$1" ]
-      then
+    then
         python manage.py makemigrations && python manage.py migrate
-      else
+    else
         python manage.py makemigrations "$1" && python manage.py migrate "$1"
     fi
 }
@@ -57,9 +80,9 @@ dj-mig(){
 # CREATE SIMPLE USER
 dj-user(){
     if [ -z "$1" ]
-      then
+    then
         echo "${WarningText}run command with USER_NAME${Reset}"
-      else
+    else
         python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_user('"$1"', '"$1"@mail.com', '${DEFAULT_PASSWORD}')"
     fi
 }
@@ -67,20 +90,20 @@ dj-user(){
 # CREATE SUPERUSER
 dj-admin(){
     if [ -z "$1" ]
-      then
+    then
         python manage.py createsuperuser
-      else
+    else
         python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('"$1"', '"$1"@mail.com', '${DEFAULT_PASSWORD}')"
     fi
 }
 
 # CLEAN DATABASE
-dj-clean(){
-  rm -rf db.sqlite3
-  find . -path "*/migrations/*.pyc"  -delete
-  find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-  python manage.py makemigrations
-  python manage.py migrate
+dj-cleaner(){
+    rm -rf db.sqlite3
+    find . -path "*/migrations/*.pyc"  -delete
+    find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+    python manage.py makemigrations
+    python manage.py migrate
 }
 
 # DJANGO SHELL
