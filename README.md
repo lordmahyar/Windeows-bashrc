@@ -34,8 +34,9 @@ Set your custom Commands in .bashrc
    dj-cleaner               recreates database
    dj-env [ENVIROMENT_DIR]  activates current project environment or ENVIROMENT_DIR
    dj-mig [APP_NAME]        makes migrations for project or specific APP_NAME
-   dj-pip PACKAGE_NAME      installs python package by PACKAGE_NAME
-   dj-prj                   creates a new project as config
+   dj-mkenv [ENVIROMENT_NAME] creates environment as env or ENVIROMENT_NAME
+   dj-pip [PACKAGE_NAME]    installs python package by PACKAGE_NAME
+   dj-project [PROJECT_NAME] creates a new project as config
    dj-req                   updates requirements.txt
    dj-run                   runs django project on server
    dj-shell                 opens django project shell
