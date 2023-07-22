@@ -21,8 +21,9 @@ dj(){
     printf "%-35s %s\n" "${SuccessText}dj-cleaner${Reset}" "recreates database"
     printf "%-35s %s\n" "${SuccessText}dj-env [ENVIROMENT_DIR]${Reset}" "activates current project environment or ENVIROMENT_DIR"
     printf "%-35s %s\n" "${SuccessText}dj-mig [APP_NAME]${Reset}" "makes migrations for project or specific APP_NAME"
-    printf "%-35s %s\n" "${SuccessText}dj-pip PACKAGE_NAME${Reset}" "installs python package by PACKAGE_NAME"
-    printf "%-35s %s\n" "${SuccessText}dj-prj${Reset}" "creates a new project as config"
+    printf "%-35s %s\n" "${SuccessText}dj-mkenv [ENVIROMENT_NAME]${Reset}" "creates environment as env or ENVIROMENT_NAME"
+    printf "%-35s %s\n" "${SuccessText}dj-pip [PACKAGE_NAME]${Reset}" "installs python package by PACKAGE_NAME"
+    printf "%-35s %s\n" "${SuccessText}dj-project [PROJECT_NAME]${Reset}" "creates a new project as config"
     printf "%-35s %s\n" "${SuccessText}dj-req${Reset}" "updates requirements.txt"
     printf "%-35s %s\n" "${SuccessText}dj-run${Reset}" "runs django project on server"
     printf "%-35s %s\n" "${SuccessText}dj-shell${Reset}" "opens django project shell"
@@ -30,7 +31,7 @@ dj(){
     printf "%-35s %s\n" "${SuccessText}dj-user USER_NAME${Reset}" "creates user by USER_NAME and DEFAULT_PASSWORD"
 }
 
-# ACTIVE DJANGO ENVIROMENT
+# ACTIVE DJANGO ENVIRONMENT
 dj-env(){
     echo "${SuccessText}Activating Virtual Environment ...${Reset}"
     if [ -z "$1" ]
@@ -42,9 +43,26 @@ dj-env(){
     fi
 }
 
+# CREATE DJANGO ENVIRONMENT
+dj-mkenv(){
+    echo "${SuccessText}Creating Virtual Environment ...${Reset}"
+    if [ -z "$1" ]
+    then
+        python -m venv env && dj-env env
+    else
+        python -m venv "$1" && dj-env "$1"
+    fi
+    dj-upg pip
+}
+
 # CREATE DJANGO PROJECT
 dj-project(){
-    django-admin startproject config
+    if [ -z "$1" ]
+    then
+        django-admin startproject config
+    else
+        django-admin startproject config && python mv config/ "$1"/ 
+    fi
 }
 
 # CREATE DJANGO APP
@@ -59,7 +77,12 @@ dj-app(){
 
 # INSTALL PYTHON PACKAGE
 dj-pip(){
-    python -m pip install "$1"
+    if [ -z "$1" ]
+    then
+        python -m pip install -r requirements.txt
+    else
+        python -m pip install "$1"
+    fi
 }
 
 # UPGRADE PYTHON PACKAGE
